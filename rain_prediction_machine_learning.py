@@ -70,7 +70,7 @@ for col in df_appended.columns:
 df_appended = df_appended.astype(float)
 
 
-# kontrol edildiğinde metadata'da da belirtilen -9999 v.b. anlamsız verile bulundu
+# kontrol edildiğinde metadata'da da belirtilen -9999 v.b. anlamsız veriler bulundu
 # ve aşama aşama düzeltilecek, filter nan olarak bıraktığı için tekrar nan'lar atıldı
 # 17420 to 15798 (final number of rows (around 60% I think))
 filter1 = df_appended["Min_Hava_S"]>-100
@@ -95,7 +95,6 @@ df_appended['Top_Yagis'].values[df_appended['Top_Yagis'].values > 0] = 1
 
 #### ML Section ##########################################################
 # X, y ayrılması yapıldı
-# Ben toplam yağışı tahmin etmek daha anlamlı olur diye düşündüm ama scokoru yükseltemedim
 
 
 y = df_appended[["Top_Yagis"]]
@@ -105,7 +104,7 @@ X = df_appended.drop(["Top_Yagis"], axis=1)
 
 X, y = shuffle(X, y, random_state=7)
 
-# X 'i integer olarak girmek fayda sağlayabilir diye düşündüm ama olmadı:
+# X 'i integer olarak girmek denendi ancak pek bir etkisi olmadı
 # for col in X.columns:
 #     X[col] = X[col].apply(np.floor)
 
