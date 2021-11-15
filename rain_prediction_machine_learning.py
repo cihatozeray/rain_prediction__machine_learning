@@ -43,12 +43,14 @@ df_appended.drop(columns=df_appended.columns[[0, 2, 4, 7, 9, 12, 14, \
                     18, 19, 21, 22, 20, 24, 26, 29, 31]], inplace=True)
 # gün / ay kolonundan ay' belki tahmin' i iyileştirmek için kullanılabilir
 # temizlenip eklenecek: 
-df_appended[df_appended.columns[0]] = df_appended[df_appended.columns[0]].str.replace('\d+', '')
+#df_appended[df_appended.columns[0]] = df_appended[df_appended.columns[0]].str.replace('\d+', '')
 
-df_dummy = pd.get_dummies(df_appended[df_appended.columns[0]])
-df_appended.drop(columns=df_appended.columns[0], axis=1, inplace=True)
-df_appended = pd.concat([df_appended, df_dummy], axis=1)
+#df_dummy = pd.get_dummies(df_appended[df_appended.columns[0]])
+#df_appended.drop(columns=df_appended.columns[0], axis=1, inplace=True)
+#df_appended = pd.concat([df_appended, df_dummy], axis=1)
 
+#tarih kolonu anlamsız bulundu ve droplandı
+df_appended.drop(columns=df_appended.columns[[0]], inplace=True)
 
 # # 2020 verilerinde kayma tespit edildi ve silinecek komple (22999 to 21363):
 # df_appended = df_appended[~df_appended["Verinin Yılı"].isin(["2020" ])]
@@ -91,7 +93,9 @@ desc = df_appended.describe()
 # Bu işlem sonucu skor iki katına çıktı
 df_appended['Top_Yagis'].values[df_appended['Top_Yagis'].values > 0] = 1
 
-
+#Tarih kolonlarının droplanması (varken kullanıldı)
+#df_appended.drop(columns=df_appended.columns[[-1,-2,-3,-4,-5,-6,-7,\
+#                                              -8,-9,-10,-11,-12,-13]], inplace=True)
 
 #### ML Section ##########################################################
 # X, y ayrılması yapıldı
@@ -135,10 +139,8 @@ score = metrics.r2_score(y_test, y_pred)
 score_out = "SCORE is  " + str(score)
 print(score_out)
 
-# Not: ML bölmesinde derste yazılan kodlar kullanıldı
+
 # ML bölmesi ayrı bir hücre olarak çalıştırılarak zamandan kazanılabilir
-# ve farklı regression çeşitleri denenebilir
-# (benim denediklerimin sonuca fazla olumlu bir etkisi olmadı)
-# Ekim ayının sonuca etkisi çok yüksek gözüküyor. Yağışın yüksek olduğu
-# aylar yağış miktarını yönlendiriyor olabilir. Yağışın 0 dan büyük olma durumunu
+# Denediğim farklı regresyon çeşitlerinin sonuca olumlu bir etkisi olmadı
+# Yağışın 0 dan büyük olma durumunu
 # 1 olarak kabul ettiğimiz zaman skor iki katına çıkıyor ama hala 0.20 seviyelerinde
